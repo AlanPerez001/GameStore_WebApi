@@ -1,0 +1,163 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>GameStore_WebApi</name>
+    </assembly>
+    <members>
+        <member name="T:GameStore_WebApi.ActionFilters.Api200Response`1">
+            <summary>
+            Clase que engloba los diferentes modelos de respuestas que se tienen.
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="T:GameStore_WebApi.ActionFilters.ApiBadRequestResponse">
+            <summary>
+            Clase para personalizar la respuesta de modelos invalidos
+            </summary>
+        </member>
+        <member name="T:GameStore_WebApi.ActionFilters.ApiResponse">
+            <summary>
+            Clase para manejar las respuestas del servidor. Todas las respuestas incluiran el status Code donde esta el codigo http de respuesta y un message donde esta la descripcion de la respuesta
+            </summary>
+        </member>
+        <member name="T:GameStore_WebApi.ActionFilters.ErrorWrappingMiddleware">
+            <summary>
+            Este middleware personaliza las respuesta de error para que se devuelvan en formato json
+            y con esto todas las respuestas del controlador serian en ese formato.
+            Referencia https://www.devtrends.co.uk/blog/handling-errors-in-asp.net-core-web-api
+            </summary>
+        </member>
+        <member name="T:GameStore_WebApi.ActionFilters.ErrorWrappingMiddlewareExtension">
+            <summary>
+            Extension para que sea inyectado el middleware
+            </summary>
+        </member>
+        <member name="T:GameStore_WebApi.ActionFilters.LogRequestMiddleware">
+            <summary>
+            Middleware para poder obtener las peticiones y las respuestas del web api y poder logearlas.
+            </summary>
+        </member>
+        <member name="T:GameStore_WebApi.ActionFilters.LogRequestMiddlewareExtension">
+            <summary>
+            Extension para que sea inyectado el middleware
+            </summary>
+        </member>
+        <member name="T:GameStore_WebApi.ActionFilters.ModelValidatorFilter">
+            <summary>
+            Esta filter personaliza la respuesta al obtener un modelo invalido. Se debe usar como encabezado en los controladores o en los metodos del controlador.
+            </summary>
+        </member>
+        <member name="T:GameStore_WebApi.ActionFilters.Respuesta200`1">
+            <summary>
+            Clase para devolver las respuestas exitosas HTTP 200.
+            OJO en un login puede tener un error de credenciales no validas pero aun asi se mandaria es una respuesta HTTP 200
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="T:GameStore_WebApi.ActionFilters.ValidationError">
+            <summary>
+            Clase auxiliar para definir un error sobre los campos invalidos dentro de un model invalido
+            </summary>
+        </member>
+        <member name="T:GameStore_WebApi.Authentications.AuthenticationResponse">
+            <summary>
+            Clase para devolver la respuesta de una autenticacion por ejemplo en un login o un registro
+            </summary>
+        </member>
+        <member name="T:GameStore_WebApi.Authentications.ClaimsParaJwt">
+            <summary>
+            Clase para tener un modelo con los Claims que contendra el Token de JWT
+            </summary>
+        </member>
+        <member name="T:GameStore_WebApi.Authentications.IJWTAuthenticationManager">
+            <summary>
+            Interfaz para el JWT authentication manager
+            </summary>
+        </member>
+        <member name="T:GameStore_WebApi.Authentications.IRefreshTokenGenerator">
+            <summary>
+            Interfaz que para el RefreshTokenGenerator 
+            </summary>
+        </member>
+        <member name="T:GameStore_WebApi.Authentications.ITokenRefresher">
+            <summary>
+            Interfaz para el TokenRefresher
+            </summary>
+        </member>
+        <member name="T:GameStore_WebApi.Authentications.JWTAuthenticationManager">
+            <summary>
+            Clase para manejar la generacion de los JWT
+            </summary>
+        </member>
+        <member name="M:GameStore_WebApi.Authentications.JWTAuthenticationManager.Authenticate(System.String,System.Security.Claims.Claim[],System.String)">
+            <summary>
+            Metodo para generar el token de acuerdo a un refresh token
+            </summary>
+            <param name="idUser"></param>
+            <param name="claims"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GameStore_WebApi.Authentications.JWTAuthenticationManager.Authenticate(GameStore_WebApi.Authentications.ClaimsParaJwt)">
+            <summary>
+            Metodo para generar el JWT completo por ejemplo desde un login o un registro
+            </summary>
+            <param name="datosParaJwt"></param>
+            <returns></returns>
+        </member>
+        <member name="T:GameStore_WebApi.Authentications.RefreshTokenGenerator">
+            <summary>
+            Clase para generar un RefreshToken
+            </summary>
+        </member>
+        <member name="T:GameStore_WebApi.Authentications.RefreshTokenJwt">
+            <summary>
+            Clase modelo para generar un nuevo JWT en base a un refresh Token
+            </summary>
+        </member>
+        <member name="T:GameStore_WebApi.Authentications.TokenRefresher">
+            <summary>
+            Clase para actualizar un JWT en base a un refresh token. Aqui se haran todas las reglas sobre el refresh token
+            </summary>
+        </member>
+        <member name="M:GameStore_WebApi.Controllers.AutenticacionController.IniciarSesion(GameStore_WebApi.Models.Autenticacion.IniciarSesion)">
+            <summary>
+            Metodo para iniciar sesion y obtejer el JWT y el RefreshToken. El JWT sirve para autentificarse en los controladores que requieran autentificacion
+            y el RefreshToken sirve para obtener un nuevo JWT en caso de que ya haya vencido. Regularmente dura 15 minutos el JWT
+            </summary>
+            <param name="modelo"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GameStore_WebApi.Controllers.AutenticacionController.RefreshToken(GameStore_WebApi.Authentications.RefreshTokenJwt)">
+            <summary>
+            Metodo para obtener un nuevo JWT en caso de que ya haya vencido.
+            </summary>
+            <param name="modelo"></param>
+            <returns></returns>
+        </member>
+        <member name="T:GameStore_WebApi.Controllers.ErrorController">
+            <summary>
+            Controlador que sirve para que se manejen los errores que se generen en el web api como un 404
+            </summary>
+        </member>
+        <member name="T:GameStore_WebApi.Models.Autenticacion.IniciarSesion">
+            <summary>
+            Modelo para peticiones de inicio de sesion
+            </summary>
+        </member>
+        <member name="T:GameStore_WebApi.Services.Interfaces.IAutenticacionService">
+            <summary>
+             Interfaz para inplementar las conexiones a la base de datos para la Autenticacion
+            </summary>
+        </member>
+        <member name="T:GameStore_WebApi.Utility.AppSettings">
+            <summary>
+            Clase auxiliar para representar los datos parametrizados que se guardan en el AppSettings de appsettings.json
+            </summary>
+        </member>
+        <member name="T:GameStore_WebApi.Utility.ConnectionStrings">
+            <summary>
+            Clase auxiliar para representar las cadenas de conexion de ConnectionStrings de appsettings.json
+            </summary>
+        </member>
+    </members>
+</doc>
