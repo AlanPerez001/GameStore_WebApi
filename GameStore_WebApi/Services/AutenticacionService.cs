@@ -38,8 +38,6 @@ namespace GameStore_WebApi.Services
                         comm.CommandType = CommandType.StoredProcedure;
                         comm.Parameters.AddWithValue("@correo", modelo.Usuario);
                         comm.Parameters.AddWithValue("@contrasena", modelo.Password);
-                        comm.Parameters.AddWithValue("@plataforma", modelo.Plataforma);
-                        comm.Parameters.AddWithValue("@version", modelo.Version);
                         comm.CommandTimeout = timeoutCommand;
                         con.Open();
                         using (var reader = comm.ExecuteReader())

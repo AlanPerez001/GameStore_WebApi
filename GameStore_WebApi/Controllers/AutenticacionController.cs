@@ -45,7 +45,6 @@ namespace GameStore_WebApi.Controllers
         /// <summary>
         /// Metodo para iniciar sesion y obtejer el JWT y el RefreshToken. El JWT sirve para autentificarse en los controladores que requieran autentificacion
         /// y el RefreshToken sirve para obtener un nuevo JWT en caso de que ya haya vencido. Regularmente dura 15 minutos el JWT
-        /// Aun no esta implementado en la base de datos, se deben crear las tablas y los SP para todo el proceso de autenticacion.
         /// </summary>
         /// <param name="modelo"></param>
         /// <returns></returns>

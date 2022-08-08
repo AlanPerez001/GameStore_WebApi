@@ -135,7 +135,7 @@ namespace GameStore_WebApi
             ////Cada servicio hay que inyectarlo
             services.AddTransient<IAutenticacionService, AutenticacionService>();
             services.AddTransient<ILogService, DbLogService>();
-            services.AddTransient<IGeneralService, GeneralService>();
+            services.AddTransient<ICatalogoService, CatalogoService>();
 
             ////Parte donde se inyectan los servicios del JWT
             services.AddSingleton<ITokenRefresher>(x =>
