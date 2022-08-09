@@ -12,7 +12,11 @@ namespace GameStore_WebApi.Services.Interfaces
     /// </summary>
     public interface ICatalogoService
     {
-        public RespuestaObtenerVideoJuegos ObtenerCatalogoVideojuegos(int idGenero, int idConsola);
-        public RespuestaGeneral CreaNuevoRegistro(PeticionNuevoRegistro model, string CadenaConsola);
+        public RespuestaObtenerVideoJuegos ObtenerCatalogoVideojuegos();
+        public RespuestaObtenerDetalleVideoJuego ObtenerDetalleJuego(int idJuego);
+        public RespuestaObtenerVideoJuegos ObtenerCatalogoFiltradoVideojuegos(int idgenero, int idConsola);
+        public RespuestaGetfiltros ObtenerFiltros(int idFiltro);
+        public RespuestaGeneral GuardaRegistro(PeticionNuevoRegistro model);
+        public RespuestaGeneral EliminaRegistro(PeticionEliminar model);
     }
 }

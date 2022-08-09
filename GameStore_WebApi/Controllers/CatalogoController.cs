@@ -43,18 +43,16 @@ namespace GameStore_WebApi.Controllers
 
 
         /// <summary>
-        /// Metodo para obtener el catalogo completo de videojuegos y filtrar por Genero o consola
+        /// Metodo para obtener el catalogo completo de videojuegos 
         /// </summary>
-        /// <param name="idGenero"></param>
-        /// <param name="idConsola"></param>
         /// <returns></returns>
         [HttpGet]
-        [Route("ObtenerVidejuegos/{idGenero}/{idConsola}")]
+        [Route("ObtenerVidejuegos")]
         [ProducesResponseType(typeof(ApiResponse), 500)]
         [ProducesResponseType(typeof(ApiResponse), 401)]
         [ProducesResponseType(typeof(ApiResponse), 403)]
         [ProducesResponseType(typeof(Api200Response<RespuestaObtenerVideoJuegos>), 200)]
-        public IActionResult ObtenerVidejuegos(int idGenero, int idConsola)
+        public IActionResult ObtenerVidejuegos()
         {
             try
             {
@@ -63,7 +61,7 @@ namespace GameStore_WebApi.Controllers
                 if (idU.Value == null)
                     return new ObjectResult(new ApiResponse(401, _appSettings.Mensaje401));
 
-                RespuestaObtenerVideoJuegos res = catalogoService.ObtenerCatalogoVideojuegos(idGenero,idConsola);
+                RespuestaObtenerVideoJuegos res = catalogoService.ObtenerCatalogoVideojuegos();
                 return Ok(new Api200Response<RespuestaObtenerVideoJuegos>(res));
             }
             catch (MiExcepcion ex)
@@ -77,17 +75,17 @@ namespace GameStore_WebApi.Controllers
         }
 
         /// <summary>
-        /// Metodo para crear un nuevo videojuego en el catalogo
-        /// <paramref name="model"/>
+        /// Metodo para obtener el catalogo completo de videojuegos y filtrar por Genero o consola
+        /// <paramref name="idFiltro"/>
         /// </summary>
         /// <returns></returns>
-        [HttpPost]
-        [Route("CreaNuevoRegistro")]
+        [HttpGet]
+        [Route("ObtenerFiltros/{idFiltro}")]
         [ProducesResponseType(typeof(ApiResponse), 500)]
         [ProducesResponseType(typeof(ApiResponse), 401)]
         [ProducesResponseType(typeof(ApiResponse), 403)]
-        [ProducesResponseType(typeof(Api200Response<RespuestaGeneral>), 200)]
-        public IActionResult CreaNuevoRegistro([FromBody] PeticionNuevoRegistro model)
+        [ProducesResponseType(typeof(Api200Response<RespuestaGetfiltros>), 200)]
+        public IActionResult ObtenerFiltros(int idFiltro)
         {
             try
             {
@@ -96,15 +94,105 @@ namespace GameStore_WebApi.Controllers
                 if (idU.Value == null)
                     return new ObjectResult(new ApiResponse(401, _appSettings.Mensaje401));
 
-                var CadenaConsola = "";
-                if (model.idConsola.Count > 0)
-                {
-                    foreach (var id in model.idConsola)
-                    {
-                        CadenaConsola += id.idConsola.ToString() + ",";
-                    }
-                }
-                RespuestaGeneral res = catalogoService.CreaNuevoRegistro(model, CadenaConsola);
+                RespuestaGetfiltros res = catalogoService.ObtenerFiltros(idFiltro);
+                return Ok(new Api200Response<RespuestaGetfiltros>(res));
+            }
+            catch (MiExcepcion ex)
+            {
+                return new ObjectResult(new ApiResponse(500, ex.Message));
+            }
+            catch (Exception ex)
+            {
+                return new ObjectResult(new ApiResponse(500, _appSettings.MensajeErrorExcepcion));
+            }
+        }
+
+        /// <summary>
+        /// Metodo para obtener el catalogo filtrado
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("ObtenerjuegosFiltro/{idGenero}/{idConsola}")]
+        [ProducesResponseType(typeof(ApiResponse), 500)]
+        [ProducesResponseType(typeof(ApiResponse), 401)]
+        [ProducesResponseType(typeof(ApiResponse), 403)]
+        [ProducesResponseType(typeof(Api200Response<RespuestaObtenerVideoJuegos>), 200)]
+        public IActionResult ObtenerjuegosFiltro(int idGenero, int idConsola)
+        {
+            try
+            {
+                var claims = User.Claims.ToList();
+                var idU = claims.FirstOrDefault(x => x.Type == ClaimTypes.Name);
+                if (idU.Value == null)
+                    return new ObjectResult(new ApiResponse(401, _appSettings.Mensaje401));
+
+                RespuestaObtenerVideoJuegos res = catalogoService.ObtenerCatalogoFiltradoVideojuegos(idGenero, idConsola);
+                return Ok(new Api200Response<RespuestaObtenerVideoJuegos>(res));
+            }
+            catch (MiExcepcion ex)
+            {
+                return new ObjectResult(new ApiResponse(500, ex.Message));
+            }
+            catch (Exception ex)
+            {
+                return new ObjectResult(new ApiResponse(500, _appSettings.MensajeErrorExcepcion));
+            }
+        }
+
+        /// <summary>
+        /// Metodo para obtener el detalle de un registro
+        /// </summary>
+        /// <param name="idJuego"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("ObtenerDetalleJuego/{idJuego}")]
+        [ProducesResponseType(typeof(ApiResponse), 500)]
+        [ProducesResponseType(typeof(ApiResponse), 401)]
+        [ProducesResponseType(typeof(ApiResponse), 403)]
+        [ProducesResponseType(typeof(Api200Response<RespuestaObtenerDetalleVideoJuego>), 200)]
+        public IActionResult ObtenerDetalleJuego(int idJuego)
+        {
+            try
+            {
+                var claims = User.Claims.ToList();
+                var idU = claims.FirstOrDefault(x => x.Type == ClaimTypes.Name);
+                if (idU.Value == null)
+                    return new ObjectResult(new ApiResponse(401, _appSettings.Mensaje401));
+
+                RespuestaObtenerDetalleVideoJuego res = catalogoService.ObtenerDetalleJuego(idJuego);
+                return Ok(new Api200Response<RespuestaObtenerDetalleVideoJuego>(res));
+            }
+            catch (MiExcepcion ex)
+            {
+                return new ObjectResult(new ApiResponse(500, ex.Message));
+            }
+            catch (Exception ex)
+            {
+                return new ObjectResult(new ApiResponse(500, _appSettings.MensajeErrorExcepcion));
+            }
+        }
+
+        /// <summary>
+        /// Metodo para crear o actualizar un videojuego en el catalogo
+        /// <paramref name="model"/>
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("GuardaRegistro")]
+        [ProducesResponseType(typeof(ApiResponse), 500)]
+        [ProducesResponseType(typeof(ApiResponse), 401)]
+        [ProducesResponseType(typeof(ApiResponse), 403)]
+        [ProducesResponseType(typeof(Api200Response<RespuestaGeneral>), 200)]
+        public IActionResult GuardaRegistro([FromBody] PeticionNuevoRegistro model)
+        {
+            try
+            {
+                var claims = User.Claims.ToList();
+                var idU = claims.FirstOrDefault(x => x.Type == ClaimTypes.Name);
+                if (idU.Value == null)
+                    return new ObjectResult(new ApiResponse(401, _appSettings.Mensaje401));
+
+                RespuestaGeneral res = catalogoService.GuardaRegistro(model);
                 return Ok(new Api200Response<RespuestaGeneral>(res));
             }
             catch (MiExcepcion ex)
@@ -116,5 +204,39 @@ namespace GameStore_WebApi.Controllers
                 return new ObjectResult(new ApiResponse(500, _appSettings.MensajeErrorExcepcion));
             }
         }
+
+        /// <summary>
+        /// Metodo para eliminar un registro del catalogo
+        /// <paramref name="model"/>
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("EliminaRegistro")]
+        [ProducesResponseType(typeof(ApiResponse), 500)]
+        [ProducesResponseType(typeof(ApiResponse), 401)]
+        [ProducesResponseType(typeof(ApiResponse), 403)]
+        [ProducesResponseType(typeof(Api200Response<RespuestaGeneral>), 200)]
+        public IActionResult EliminaRegistro([FromBody] PeticionEliminar model)
+        {
+            try
+            {
+                var claims = User.Claims.ToList();
+                var idU = claims.FirstOrDefault(x => x.Type == ClaimTypes.Name);
+                if (idU.Value == null)
+                    return new ObjectResult(new ApiResponse(401, _appSettings.Mensaje401));
+
+                RespuestaGeneral res = catalogoService.EliminaRegistro(model);
+                return Ok(new Api200Response<RespuestaGeneral>(res));
+            }
+            catch (MiExcepcion ex)
+            {
+                return new ObjectResult(new ApiResponse(500, ex.Message));
+            }
+            catch (Exception ex)
+            {
+                return new ObjectResult(new ApiResponse(500, _appSettings.MensajeErrorExcepcion));
+            }
+        }
+
     }
 }

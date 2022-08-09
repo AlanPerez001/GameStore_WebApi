@@ -7,7 +7,7 @@ namespace GameStore_WebApi.ActionFilters
 {
     public class Respuesta200General
     {
-        public int idRespuesta { get; set; }
+        public int idResponse { get; set; }
         public string mensaje { get; set; }
     }
 }

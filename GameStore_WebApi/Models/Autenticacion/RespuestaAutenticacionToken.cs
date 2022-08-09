@@ -11,10 +11,10 @@ namespace GameStore_WebApi.Models.Autenticacion
     {
         public AuthenticationResponse datos { get; set; }
 
-        public RespuestaAutenticacionToken(int idRespuesta, string mensaje, AuthenticationResponse datos)
+        public RespuestaAutenticacionToken(int idResponse, string mensaje, AuthenticationResponse datos)
         {
             this.datos = datos;
-            this.idRespuesta = idRespuesta;
+            this.idResponse = idResponse;
             this.mensaje = mensaje;
         }
     }

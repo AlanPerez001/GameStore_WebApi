@@ -11,9 +11,16 @@ namespace GameStore_WebApi.Models.Catalogo
         public string Response { get; set; }
         public List<VideoJuegos> Datos { get; set; }
     }
+    public class RespuestaObtenerDetalleVideoJuego
+    {
+        public int idResponse { get; set; }
+        public string Response { get; set; }
+        public VideoJuegos Datos { get; set; }
+    }
 
     public class VideoJuegos
     {
+        public int idJuego { get; set; }
         public string Titulo { get; set; }
         public string Descripcion { get; set; }
         public string AnioPublicacion { get; set; }
